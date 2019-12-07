@@ -21,9 +21,14 @@ public class Eclair2019 extends LinearOpMode {
         DcMotor slideMotor = hardwareMap.dcMotor.get("slideMotor");
         Servo capstoneServo = hardwareMap.servo.get("capstoneServo");
         Servo servoZero = hardwareMap.servo.get("servoZero");
-        Servo shoulderServo = hardwareMap.servo.get("servoOne");
-        Servo jointServo = hardwareMap.servo.get("servoTwo");
+        Servo jointServo = hardwareMap.servo.get("servoOne");
+        Servo shoulderServo = hardwareMap.servo.get("servoTwo");
+        Servo platformServoOne = hardwareMap.servo.get("platformServo1");
+        Servo platformServoTwo = hardwareMap.servo.get("platformServo2");
         
+        shoulderServo.setPosition(0);
+        jointServo.setPosition(0);
+
         waitForStart();
         
         // reset encoder count kept by left motor.
@@ -43,13 +48,7 @@ public class Eclair2019 extends LinearOpMode {
                 motorTwo.setPower(leftPower);
                 motorThree.setPower(-rightPower);
     
-                shoulderServo.setPosition(secondPowerRight);
-                if(gamepad2.x)
-                    jointUp = !jointUp;
-                if(!jointUp)
-                    jointServo.setPosition(.47);
-                else
-                    jointServo.setPosition(0);
+                
                 if (capstoneArmUp) {
                     capstoneServo.setPosition(0.5);
                     capstoneArmUp = !capstoneArmUp;
@@ -106,26 +105,31 @@ public class Eclair2019 extends LinearOpMode {
                     motorZero.setPower(-1);
                     motorThree.setPower(1);
                 }
-                if(gamepad2.dpad_up)
+                if(gamepad2.dpad_up && slideMotor.getCurrentPosition() > -5300)
                     slideMotor.setPower(-.4);
-                else if(gamepad2.dpad_down)
+                else if(gamepad2.dpad_down && slideMotor.getCurrentPosition() < 0)
                     slideMotor.setPower(.4);
                 else
                     slideMotor.setPower(0);
-                if(gamepad2.right_bumper)
-                    goingIn = true;
-                else if(gamepad2.left_bumper)
-                    goingIn = false;
-                if(gamepad2.b)
+                    
+                if(gamepad1.back)
+                    goingIn = !goingIn;
+                if(gamepad1.right_bumper)
                     intakeStopped = true;
-                if(gamepad2.a)
+                if(gamepad1.left_bumper)
                     intakeStopped = false;
                 if(!intakeStopped && !goingIn){
                     motorFour.setPower(-.5);
                     motorFive.setPower(.5 * speedMulti);
                 }
-                if(gamepad2.y && gamepad2.x)
-                   shoulderServo.setPosition(2);
+                if(gamepad2.left_bumper)
+                   shoulderServo.setPosition(-1);
+                if(gamepad2.right_bumper)
+                    shoulderServo.setPosition(.685);
+                if(gamepad2.y)
+                    jointServo.setPosition(-1);
+                if(gamepad2.x)
+                    jointServo.setPosition(.5);
                 if(!intakeStopped && goingIn){
                     motorFour.setPower(.5);
                     motorFive.setPower(-.5);
@@ -134,6 +138,8 @@ public class Eclair2019 extends LinearOpMode {
                     motorFour.setPower(0);
                     motorFive.setPower(0);
                 }
+                
+                telemetry.addData("Pos", "Slide: " + slideMotor.getCurrentPosition());
                 telemetry.update();
             }
     }
