@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 
-@Autonomous(name="FTC: AUTO PANEL", group="Linear Opmode")
-public class FTC_AUTO_PANEL extends LinearOpMode {
+@Autonomous(name="FTC: AUTO PANEL BLUE", group="Linear Opmode")
+public class FTC_AUTO_PANEL_BLUE extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -30,7 +30,6 @@ public class FTC_AUTO_PANEL extends LinearOpMode {
     public void runOpMode() {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
         lb = hardwareMap.dcMotor.get("motorZero");
         rb = hardwareMap.dcMotor.get("motorOne");
         lf = hardwareMap.dcMotor.get("motorTwo");
@@ -40,27 +39,24 @@ public class FTC_AUTO_PANEL extends LinearOpMode {
         ps1 = hardwareMap.servo.get("platformServo1");
         ps2 = hardwareMap.servo.get("platformServo2");
 
-        // Most robots need the motor on one side to be reversed to drive forward
-        // Reverse the motor that runs backwards when connected directly to the battery
-
         // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         waitForStart();
         runtime.reset();
-          
-        // -----------------------------------------
-
+        
         ps1.setPosition(.9);
         ps2.setPosition(.5);
-        
-        moveLeft(3000, .5);
-        
-        
+        moveBackward(600, .5);
+        moveLeft(2000, .5);
         ps1.setPosition(.7);
         ps2.setPosition(.7);
+        sleep(2000);
+        moveRight(2300, .5);
+        ps1.setPosition(.9);
+        ps2.setPosition(.5);
+        moveForward(3000, .5);
         
-        moveRight(2500, .5);
     }
     
     void moveForward(int ticks, double speed){

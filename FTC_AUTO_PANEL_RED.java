@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -9,8 +10,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 
-@Autonomous(name="FTC: AUTO Blocks", group="Linear Opmode")
-public class FTC_AUTO_Blocks extends LinearOpMode {
+@Autonomous(name="FTC: AUTO PANEL RED", group="Linear Opmode")
+public class FTC_AUTO_PANEL_RED extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -22,61 +23,40 @@ public class FTC_AUTO_Blocks extends LinearOpMode {
     private DcMotor lr;
     private DcMotor rr;
     
+    private Servo ps1;
+    private Servo ps2;
+    
     @Override
     public void runOpMode() {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
         lb = hardwareMap.dcMotor.get("motorZero");
         rb = hardwareMap.dcMotor.get("motorOne");
         lf = hardwareMap.dcMotor.get("motorTwo");
         rf = hardwareMap.dcMotor.get("motorThree");
         lr = hardwareMap.dcMotor.get("motorFour");
         rr = hardwareMap.dcMotor.get("motorFive");
-
-        // Most robots need the motor on one side to be reversed to drive forward
-        // Reverse the motor that runs backwards when connected directly to the battery
+        ps1 = hardwareMap.servo.get("platformServo1");
+        ps2 = hardwareMap.servo.get("platformServo2");
 
         // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
         telemetry.update();
+        
         waitForStart();
         runtime.reset();
           
-        // -----------------------------------------
-        //turns on intake
-        lr.setPower(.5);
-        rr.setPower(-.5);
-        
-        // moves to block
-        moveForward(1500, .5);
-        moveRight(1700, .5);
-        moveForward(900, .5);
-        turnRight(1450, .5);
-        moveForward(500, .1);
-        
-        moveLeft(1000, .5);
-        turnRight(2900, .5);
-        moveForward(2500, .5);
-        
-        
-        lr.setPower(-.5);
-        rr.setPower(.5);
-        moveBackward(2500, .5);
-        turnLeft(2900, .5);
-        moveRight(1000, .5);
-        
-        // in front of blocs
-        moveForward(750, .1);
-        
-        moveLeft(1000, .5);
-        turnRight(2900, .5);
-        moveForward(3000, .5);
-        
-        // on other side
-        lr.setPower(-.5);
-        rr.setPower(.5);
-        moveBackward(500, .5);
+        ps1.setPosition(.9);
+        ps2.setPosition(.5);
+        moveForward(600, .5);
+        moveLeft(2000, .5);
+        ps1.setPosition(.7);
+        ps2.setPosition(.7);
+        sleep(2000);
+        moveRight(2300, .5);
+        ps1.setPosition(.9);
+        ps2.setPosition(.5);
+        moveBackward(3000, .5);
         
     }
     
